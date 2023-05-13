@@ -7,6 +7,7 @@ A base module that contains the base model class.
 
 from uuid import uuid4
 from datetime import datetime
+import models
 
 
 class BaseModel(object):
@@ -44,6 +45,8 @@ class BaseModel(object):
     def save(self):
         """Update the public instance attribute 'updated_at'."""
         self.updated_at = datetime.now()
+        models.storage.new(self)
+        models.storage.save()
 
     def to_dict(self):
         """Returns a dictionary of all the key/value of the '__dict__'."""
