@@ -10,11 +10,10 @@ from models import storage
 from models.base_model import BaseModel
 from models.user import User
 from models.state import State
-from models.city  import City
+from models.city import City
 from models.place import Place
 from models.amenity import Amenity
 from models.review import Review
-
 
 
 def parse(arg):
@@ -35,9 +34,7 @@ def parse(arg):
         return retl
 
 
-
 class HBNBCommand(cmd.Cmd):
-
     """Defines the HolbertonBnB command interpreter.
 
     Attributes:
@@ -45,9 +42,6 @@ class HBNBCommand(cmd.Cmd):
         prompt (str): The command prompt.
 
     """
-
-
-
     prompt = "(hbnb) "
     __classes = {
             "BaseModel",
@@ -115,9 +109,7 @@ class HBNBCommand(cmd.Cmd):
 
     def do_show(self, arg):
         """Usage: show <class> <id> or <class>.show(<id>)
-
         Display the string representation of a class instance of a given id.
-
         """
         argl = parse(arg)
         objdict = storage.all()
@@ -243,7 +235,6 @@ class HBNBCommand(cmd.Cmd):
                     obj.__dict__[k] = v
 
         storage.save()
-
 
 
 if __name__ == "__main__":

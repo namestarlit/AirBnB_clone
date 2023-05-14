@@ -19,10 +19,11 @@ from models.review import Review
 
 class_dict = {
         'BaseModel': BaseModel, 'User': User, 'Place': Place,
-        'City': City, 'Amenity': Amenity, 'State': State,'Review': Review
+        'City': City, 'Amenity': Amenity, 'State': State, 'Review': Review
         }
 
-class FileStorage:
+
+class FileStorage(object):
     """serializes instances to a JSON file & deserializes back to instances"""
 
     __file_path = "file.json"
