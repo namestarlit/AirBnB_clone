@@ -8,8 +8,19 @@ Stores instance dictionaries into JSON format files.
 import json
 import os
 import sys
-from models import *  # import all models
 
+from models.base_model import BaseModel
+from models.user import User
+from models.state import State
+from models.city import City
+from models.place import Place
+from models.amenity import Amenity
+from models.review import Review
+
+class_dict = {
+        'BaseModel': BaseModel, 'User': User, 'Place': Place,
+        'City': City, 'Amenity': Amenity, 'State': State,'Review': Review
+        }
 
 class FileStorage:
     """serializes instances to a JSON file & deserializes back to instances"""
@@ -51,17 +62,17 @@ class FileStorage:
             os.mkdir("data")
 
         # write objects to file
-        with open(os.path.join("data", FileStorage.__file_path), 'w') as f:
+        with open(os.path.join("data", self.__file_path), 'w') as f:
             json.dump(json_objects, f)
 
     def reload(self):
         """Deserializes the JSON file to __objects"""
         try:
-            with open(FileStorage.__file_path, 'r') as f:
+            with open(os.path.join("data", self.__file_path), 'r') as f:
                 objects_dict = json.load(f)
-            for key, value in objects_dict.items():
-                class_name, obj_id = key.split('.')
-                cls = getattr(sys.modules[__name__], class_name)
-                self.new(cls(**value))
+
+                for key, value in objects_dict.items():
+                    self.new(class_dict[value['__class__']](**value))
+
         except Exception as e:
             pass
