@@ -5,7 +5,7 @@ state.py
 Module contains a State class.
 """
 
-from models.base_models import BaseModels
+from models.base_model import BaseModel
 
 
 class State(BaseModel):
