@@ -34,29 +34,29 @@ class FileStorage(object):
 
         # if cls is not given, return all objects
         if not cls:
-            return self.__objects
+            return FileStorage.__objects
 
         # if cls is a string, return objects of that class
         elif isinstance(cls, str):
-            return {key: value for key, value in self.__objects.items()
+            return {key: value for key, value in FileStorage.__objects.items()
                     if isinstance(value, eval(cls))}
 
         # if cls is a class, return objects of that class
         else:
-            return {key: value for key, value in self.__objects.items()
+            return {key: value for key, value in FileStorage.__objects.items()
                     if isinstance(value, cls)}
 
     def new(self, obj):
         """sets in __objects the obj with key <obj class name>.id"""
         if obj is not None:
-            key = obj.__class__.__name__ + "." + obj.id
-            self.__objects[key] = obj
+            key = "{}.{}".format(obj.__class__.__name__,  obj.id)
+            FileStorage.__objects[key] = obj
 
     def save(self):
         """serializes __objects to the JSON file (path: __file_path)"""
         json_objects = {}
-        for key in self.__objects:
-            json_objects[key] = self.__objects[key].to_dict()
+        for key in FileStorage.__objects:
+            json_objects[key] = FileStorage.__objects[key].to_dict()
 
         # create directory if it doesn't exist
         if not os.path.exists("data"):
@@ -81,7 +81,7 @@ class FileStorage(object):
     def delete(self, obj=None):
         """delete obj from __objects if it’s inside"""
         if obj is not None:
-            del self.__objects[obj.__class__.__name__ + '.' + obj.id]
+            del FileStorage.__objects[obj.__class__.__name__ + '.' + obj.id]
             self.save()
 
     def count(self, cls=None):
@@ -90,5 +90,5 @@ class FileStorage(object):
         if type(cls) == str and cls in classes:
             total = len(self.all(cls))
         elif cls is None:
-            total = len(self.__objects)
+            total = len(FileStorage.__objects)
         return total
