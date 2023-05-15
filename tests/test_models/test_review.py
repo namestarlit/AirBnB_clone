@@ -39,6 +39,20 @@ class TestReview(unittest.TestCase):
         self.assertIsInstance(self.r.created_at, datetime.datetime)
         self.assertIsInstance(self.r.updated_at, datetime.datetime)
 
+    def test_place_id(self):
+        """ testing review place_id attr"""
+        new = Review()
+        self.assertEqual(type(new.place_id), str)
+
+    def test_user_id(self):
+        """ testing review user_id attr"""
+        new = Review()
+        self.assertEqual(type(new.user_id), str)
+
+    def test_text(self):
+        """ testing review text attr"""
+        new = Review()
+        self.assertEqual(type(new.text), str)
 
 if __name__ == "__main__":
     unittest.main()
