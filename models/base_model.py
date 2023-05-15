@@ -55,6 +55,6 @@ class BaseModel(object):
 
         for key, value in self.__dict__.items():
             if key == 'created_at' or key == 'updated_at':
-                new_dict[key] = value.strftime("%Y-%m-%dT%H:%M:%S.%f")
+                new_dict[key] = value.isoformat()
 
         return new_dict
