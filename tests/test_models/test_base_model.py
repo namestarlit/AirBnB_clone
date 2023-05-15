@@ -3,6 +3,7 @@
 import unittest
 from models.base_model import BaseModel
 import os
+import json
 from models import storage
 from models.engine.file_storage import FileStorage
 import datetime
@@ -27,23 +28,13 @@ class TestBaseModel(unittest.TestCase):
         self.assertEqual(self.my_model.id, my_model_json['id'])
 
     def test_save(self):
-        """ Checks if save method updates the public instance instance
-        attribute updated_at """
-        self.my_model.first_name = "First"
-        self.my_model.save()
-
-        self.assertIsInstance(self.my_model.id, str)
-        self.assertIsInstance(self.my_model.created_at, datetime.datetime)
-        self.assertIsInstance(self.my_model.updated_at, datetime.datetime)
-
-        first_dict = self.my_model.to_dict()
-
-        self.my_model.first_name = "Second"
-        self.my_model.save()
-        sec_dict = self.my_model.to_dict()
-
-        self.assertEqual(first_dict['created_at'], sec_dict['created_at'])
-        self.assertNotEqual(first_dict['updated_at'], sec_dict['updated_at'])
+        """ Testing save metthod"""
+        i = BaseModel()
+        i.save()
+        key = "BaseModel" + "." + i.id
+        with open(os.path.join('data', 'file.json'), 'r') as f:
+            j = json.load(f)
+            self.assertEqual(j[key], i.to_dict())
 
     def test_str(self):
         """ testing the str method of themodel"""
