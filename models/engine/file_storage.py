@@ -63,13 +63,13 @@ class FileStorage(object):
             os.mkdir("data")
 
         # write objects to file
-        with open(os.path.join("data", self.__file_path), 'w') as f:
+        with open(os.path.join("data", FileStorage.__file_path), 'w') as f:
             json.dump(json_objects, f)
 
     def reload(self):
         """Deserializes the JSON file to __objects"""
         try:
-            with open(os.path.join("data", self.__file_path), 'r') as f:
+            with open(os.path.join("data", FileStorage.__file_path), 'r') as f:
                 objects_dict = json.load(f)
 
                 for key, value in objects_dict.items():
