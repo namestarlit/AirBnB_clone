@@ -45,6 +45,12 @@ class TestBaseModel(unittest.TestCase):
         self.assertEqual(first_dict['created_at'], sec_dict['created_at'])
         self.assertNotEqual(first_dict['updated_at'], sec_dict['updated_at'])
 
+    def test_str(self):
+        """ testing the str method of themodel"""
+        i = BaseModel()
+        self.assertEqual(str(i), '[{}] ({}) {}'.format("BaseModel", i.id,
+                                                       i.__dict__))
+
 
 if __name__ == '__main__':
     unittest.main()
