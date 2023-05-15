@@ -223,7 +223,7 @@ class TestFileStorage(unittest.TestCase):
 
     def test_reload_empty(self):
         """ Load from an empty file """
-        with open(os.path.join("data", 'file.json'), 'r') as f:
+        with open(os.path.join("data", 'file.json'), 'w') as f:
             pass
             storage.reload()
 
