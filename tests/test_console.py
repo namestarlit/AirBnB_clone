@@ -21,7 +21,6 @@ from io import StringIO
 from unittest.mock import patch
 
 
-
 class TestHBNBCommand_prompting(unittest.TestCase):
     """Unittests for testing prompting of the HBNB command interpreter."""
     def test_prompt_string(self):
@@ -32,17 +31,21 @@ class TestHBNBCommand_prompting(unittest.TestCase):
             self.assertFalse(HBNBCommand().onecmd(""))
             self.assertEqual("", output.getvalue().strip())
 
+
 class TestHBNBCommand_exit(unittest.TestCase):
     """Unittests for testing exiting from the HBNB command interpreter."""
     def test_quit_exits(self):
         with patch("sys.stdout", new=StringIO()) as output:
             self.assertTrue(HBNBCommand().onecmd("quit"))
+
     def test_EOF_exits(self):
         with patch("sys.stdout", new=StringIO()) as output:
             self.assertTrue(HBNBCommand().onecmd("EOF"))
 
+
 class TestHBNBCommand_create(unittest.TestCase):
     """Unittests for testing create from the HBNB command interpreter."""
+
     @classmethod
     def setUp(self):
         try:
@@ -50,6 +53,7 @@ class TestHBNBCommand_create(unittest.TestCase):
         except IOError:
             pass
         FileStorage.__objects = {}
+
     @classmethod
     def tearDown(self):
         try:
@@ -83,6 +87,7 @@ class TestHBNBCommand_create(unittest.TestCase):
             self.assertFalse(HBNBCommand().onecmd("BaseModel.create()"))
             self.assertEqual(correct, output.getvalue().strip())
 
+
 class TestHBNBCommand_show(unittest.TestCase):
     """Unittests for testing show from the HBNB command interpreter"""
     @classmethod
@@ -92,6 +97,7 @@ class TestHBNBCommand_show(unittest.TestCase):
         except IOError:
             pass
         FileStorage.__objects = {}
+
     @classmethod
     def tearDown(self):
         try:
@@ -217,6 +223,7 @@ class TestHBNBCommand_show(unittest.TestCase):
             self.assertFalse(HBNBCommand().onecmd("Review.show(1)"))
             self.assertEqual(correct, output.getvalue().strip())
 
+
 class TestHBNBCommand_destroy(unittest.TestCase):
     """Unittests for testing destroy from the HBNB command interpreter."""
     @classmethod
@@ -226,6 +233,7 @@ class TestHBNBCommand_destroy(unittest.TestCase):
         except IOError:
             pass
         FileStorage.__objects = {}
+
     @classmethod
     def tearDown(self):
         try:
@@ -352,6 +360,7 @@ class TestHBNBCommand_destroy(unittest.TestCase):
             self.assertFalse(HBNBCommand().onecmd("Review.destroy(1)"))
             self.assertEqual(correct, output.getvalue().strip())
 
+
 class TestHBNBCommand_all(unittest.TestCase):
     """Unittests for testing all of the HBNB command interpreter."""
     @classmethod
@@ -361,6 +370,7 @@ class TestHBNBCommand_all(unittest.TestCase):
         except IOError:
             pass
         FileStorage.__objects = {}
+
     @classmethod
     def tearDown(self):
         try:
@@ -401,6 +411,7 @@ class TestHBNBCommand_all(unittest.TestCase):
             self.assertFalse(HBNBCommand().onecmd("create Amenity"))
             self.assertFalse(HBNBCommand().onecmd("create Review"))
 
+
 class TestHBNBCommand_update(unittest.TestCase):
     """Unittests for testing update from the HBNB command interpreter."""
     @classmethod
@@ -410,6 +421,7 @@ class TestHBNBCommand_update(unittest.TestCase):
         except IOError:
             pass
         FileStorage.__objects = {}
+
     @classmethod
     def tearDown(self):
         try:
@@ -728,6 +740,7 @@ class TestHBNBCommand_update(unittest.TestCase):
             testCmd = "Review.update({}, attr_name)".format(testId)
             self.assertFalse(HBNBCommand().onecmd(testCmd))
             self.assertEqual(correct, output.getvalue().strip())
+
 
 class TestHBNBCommand_count(unittest.TestCase):
     """Unittests for testing count method of HBNB comand interpreter."""
