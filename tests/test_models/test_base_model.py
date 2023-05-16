@@ -32,7 +32,7 @@ class TestBaseModel(unittest.TestCase):
         i = BaseModel()
         i.save()
         key = "BaseModel" + "." + i.id
-        with open(os.path.join('data', 'file.json'), 'r') as f:
+        with open('file.json', 'r') as f:
             j = json.load(f)
             self.assertEqual(j[key], i.to_dict())
 
