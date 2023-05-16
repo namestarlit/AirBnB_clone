@@ -88,11 +88,10 @@ class HBNBCommand(cmd.Cmd):
                 if pline:
                     # check for *args or **kwargs
                     if pline.startswith("{") and pline.endswith("}"):
-                        if pline is dict:
+                        if type(eval(pline)) is dict:
                             _args = pline
                     else:
                         _args = pline.replace(",", "")
-                        # _args = _args.replace('"', '')
 
             # handle commands
             if _cmd == "all":
@@ -320,6 +319,7 @@ class HBNBCommand(cmd.Cmd):
             if key not in storage.all():
                 raise ValueError("** no instance found **")
             obj = storage.all()[key]
+
             # Updating the attributes
             if len(args_list) < 3:
                 raise ValueError("** attribute name missing **")
@@ -329,10 +329,14 @@ class HBNBCommand(cmd.Cmd):
             attr_val = args_list[3]
             try:
                 attr_val = eval(attr_val)
+                if isinstance(attr_val, dict):
+                    obj.update(attr_val)
+                else:
+                    setattr(obj, attr_name, attr_val)
             except (NameError, SyntaxError):
-                pass
-            setattr(obj, attr_name, attr_val)
+                setattr(obj, attr_name, attr_val)
             storage.save()
+
         except ValueError as e:
             print(e)
 
