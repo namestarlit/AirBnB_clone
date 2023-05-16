@@ -8,6 +8,7 @@ import unittest
 from models.base_model import BaseModel
 from models import storage
 import os
+import json
 
 class test_fileStorage(unittest.TestCase):
     """ Class to test the file storage method """
@@ -112,6 +113,51 @@ class test_fileStorage(unittest.TestCase):
         from models.engine.file_storage import FileStorage
         self.assertEqual(type(storage), FileStorage)
 
+    def test_file_path(self):
+        """ Confirm __file_path attribute is set """
+        self.assertEqual(storage._FileStorage__file_path, "file.json")
+
+    def test_objects_attribute(self):
+        """ Confirm __objects attribute is present """
+        self.assertTrue(hasattr(storage, "_FileStorage__objects"))
+        self.assertIsInstance(storage._FileStorage__objects, dict)
+
+    def test_all_method(self):
+        """ Test the all() method """
+        new = BaseModel()
+        new.save()
+        objects = storage.all()
+        self.assertIsInstance(objects, dict)
+        self.assertIn(new.__class__.__name__ + "." + new.id, objects)
+
+    def test_new_method(self):
+        """ Test the new() method """
+        new = BaseModel()
+        storage.new(new)
+        self.assertIn(new.__class__.__name__ + "." + new.id, storage._FileStorage__objects)
+
+    def test_save_method(self):
+        """ Test the save() method """
+        new = BaseModel()
+        storage.new(new)
+        storage.save()
+        # Check if the file was saved and contains the object
+        with open('file.json', 'r') as f:
+            data = json.load(f)
+            self.assertIn(new.__class__.__name__ + "." + new.id, data)
+
+    def test_reload_method(self):
+        """ Test the reload() method """
+        new = BaseModel()
+        new.save()
+        # Modify the file contents
+        with open('file.json', 'w') as f:
+            f.write('{"fake_key": "fake_value"}')
+        # Perform reload
+        storage.reload()
+        objects = storage.all()
+        # Check if the reloaded objects contain the previous object
+        self.assertIn(new.__class__.__name__ + "." + new.id, objects)
 
 if __name__ == '__main__':
     unittest.main()
