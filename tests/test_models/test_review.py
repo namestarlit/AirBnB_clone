@@ -54,5 +54,6 @@ class TestReview(unittest.TestCase):
         new = Review()
         self.assertEqual(type(new.text), str)
 
+
 if __name__ == "__main__":
     unittest.main()
