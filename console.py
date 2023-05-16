@@ -14,7 +14,7 @@ import shlex
 from models.base_model import BaseModel
 from models.user import User
 from models.state import State
-from models.city  import City
+from models.city import City
 from models.place import Place
 from models.amenity import Amenity
 from models.review import Review
@@ -71,12 +71,12 @@ class HBNBCommand(cmd.Cmd):
             _cls = pline[: pline.find(".")]
 
             # isolate and validate <command>
-            _cmd = pline[pline.find(".") + 1 : pline.find("(")]
+            _cmd = pline[pline.find(".") + 1:pline.find("(")]
             if _cmd not in self.action_cmds:
                 raise ValueError(f"{_cmd}: invalid command")
 
             # if parentheses contain arguments, parse them
-            pline = pline[pline.find("(") + 1 : pline.find(")")]
+            pline = pline[pline.find("(") + 1:pline.find(")")]
             if pline:
                 # partition args: (<id>, [<delim>], [<*args>])
                 pline = pline.partition(", ")  # pline convert to tuple
@@ -90,8 +90,9 @@ class HBNBCommand(cmd.Cmd):
                 pline = pline[2].strip()  # pline is now str
                 if pline:
                     # check for *args or **kwargs
-                    if pline[0] == "{" and pline[-1] == "}" and type(eval(pline)) is dict:
-                        _args = pline
+                    if pline.startswith("{") and pline.endswith("}"):
+                        if pline is dict:
+                            _args = pline
                     else:
                         _args = pline.replace(",", "")
                         # _args = _args.replace('"', '')
@@ -117,7 +118,8 @@ class HBNBCommand(cmd.Cmd):
                 if not _id:
                     raise ValueError("missing id")
                 if not _args:
-                    raise ValueError("missing attribute dictionary or attribute name/value pair")
+                    raise ValueError("missing attribute dictionary or \
+                            attribute name/value pair")
                 self.do_update(f"{_cls} {_id} {_args}")
                 return ""
 
@@ -136,7 +138,8 @@ class HBNBCommand(cmd.Cmd):
         return stop
 
     def emptyline(self):
-        """Do nothing instead of repeating last command when an empty line is entered."""
+        """Do nothing instead of repeating last
+        command when an empty line is entered."""
         pass
 
     def do_create(self, args):
@@ -144,8 +147,8 @@ class HBNBCommand(cmd.Cmd):
         # Attributes to be ignored when creating a new object
         ignored_attrs = ('id', 'created_at', 'updated_at', '__class__')
         # Pattern to match the class name
-        class_name_pattern = r'(?P<class_name>(?:[a-zA-Z]|_)(?:[a-zA-Z]|\d|_)*)'
-        class_match = re.match(class_name_pattern, args)
+        class_regex = r'(?P<class_name>(?:[a-zA-Z]|_)(?:[a-zA-Z]|\d|_)*)'
+        class_match = re.match(class_regex, args)
 
         obj_kwargs = {}
 
@@ -164,7 +167,7 @@ class HBNBCommand(cmd.Cmd):
 
             # Pattern to match param name and value
             param_pattern = '{}=({}|{}|{})'.format(
-                    class_name_pattern,
+                    class_regex,
                     str_pattern,
                     float_pattern,
                     int_pattern
@@ -264,7 +267,8 @@ class HBNBCommand(cmd.Cmd):
         storage.save()
 
     def do_all(self, arg):
-        """Prints all string representation of all instances based or not on the class name"""
+        """Prints all string representation of all
+        instances based or not on the class name"""
         objects = storage.all()
         obj_list = []
         if len(arg) == 0:
@@ -338,9 +342,11 @@ class HBNBCommand(cmd.Cmd):
     def do_quit(self, arg):
         """Quit command to exit the program."""
         return True
+
     def do_EOF(self, arg):
         """EOF signal to exit the program."""
         return True
+
     def postloop(self):
         print()
 
