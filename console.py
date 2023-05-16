@@ -25,10 +25,7 @@ class HBNBCommand(cmd.Cmd):
     """Represents HBNBCommand class."""
 
     # Define console  prompt
-    if sys.__stdin__.isatty():
-        prompt = "(hbnb) "
-    else:
-        prompt = ""
+    prompt = "(hbnb) " if sys.__stdin__.isatty() else ''
 
     classes = {
             'BaseModel': BaseModel,
