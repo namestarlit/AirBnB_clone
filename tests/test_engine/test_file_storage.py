@@ -16,6 +16,7 @@ class TestFileStorage(unittest.TestCase):
     """ Suite of File Storage Tests """
 
     my_model = BaseModel()
+    __file_path = 'file.json'
 
     def setUp(self):
         """ Set up test environment """
@@ -38,6 +39,10 @@ class TestFileStorage(unittest.TestCase):
 
         key = bm_dict['__class__'] + "." + bm_dict['id']
         self.assertEqual(key in all_objs, True)
+
+    def test_path(self):
+        """Test if __file_path exists."""
+        self.assertTrue(os.path.exists(TestFileStorage.__file_path))
 
     def test_StoreBaseModel2(self):
         """ Test save, reload and update functions """
